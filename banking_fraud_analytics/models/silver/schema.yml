@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: silver_transactions
+    columns:
+      - name: transaction_id
+        tests:
+          - unique
+          - not_null
+      - name: is_fraud
+        tests:
+          - accepted_values:
+              values: ['Yes', 'No']
+      - name: transaction_direction
+        tests:
+          - accepted_values:
+              values: ['debit', 'credit', 'zero']
+
+  - name: silver_users
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+      - name: credit_score_category
+        tests:
+          - accepted_values:
+              values: ['Exceptional', 'Very Good', 'Good', 'Fair', 'Poor']
+
+  - name: silver_cards
+    columns:
+      - name: card_id
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        tests:
+          - relationships:
+              to: ref('silver_users')
+              field: customer_id

@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: bronze_transactions
+    columns:
+      - name: transaction_id
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+      - name: card_id
+        tests:
+          - not_null
+      - name: amount
+        tests:
+          - not_null
+
+  - name: bronze_users
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+      - name: credit_score
+        tests:
+          - not_null
+
+  - name: bronze_cards
+    columns:
+      - name: card_id
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
