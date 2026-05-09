@@ -5,6 +5,9 @@
 name: 'banking_fraud_analytics'
 version: '1.0.0'
 
+flags:
+  use_managed_iceberg: true  
+
 # This setting configures which "profile" dbt uses for this project.
 profile: 'banking_fraud_analytics'
 
@@ -31,6 +34,16 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   banking_fraud_analytics:
-    # Config indicated by + and applies to all files under models/example/
-    example:
-      +materialized: view
+     bronze:
+      +materialized: table #other options include view, incremental, ephemeral
+      +schema: bronze
+     silver:
+      +materialized: table
+      +schema: silver
+     gold:
+      +materialized: table
+      +schema: gold
+
+seeds:
+  banking_fraud_analytics:
+    +schema: seeds

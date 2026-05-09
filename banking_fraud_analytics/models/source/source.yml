@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: banking_source
+    catalog: banking_fraud_analytics_dev
+    schema: source
+    tables:
+      - name: transactions_data
+        description: "Raw transactions data"
+      - name: users_data
+        description: "Raw users/customers data"
+      - name: cards_data
+        description: "Raw cards data"
