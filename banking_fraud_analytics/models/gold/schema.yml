@@ -1,0 +1,103 @@
+version: 2
+
+models:
+  - name: gold_fraud_analysis
+    description: "Transaction level fraud analysis with rule based fraud flags joining transactions, users and cards"
+    columns:
+      - name: transaction_id
+        description: "Unique identifier for each transaction"
+        tests:
+          - unique
+          - not_null
+      - name: transaction_date
+        description: "Date and time of the transaction"
+      - name: customer_id
+        description: "Foreign key to silver_users"
+      - name: card_id
+        description: "Foreign key to silver_cards"
+      - name: amount
+        description: "Absolute transaction amount always positive"
+      - name: transaction_direction
+        description: "Whether money is going in (credit) or out (debit) or zero"
+      - name: merchant_category
+        description: "Human readable merchant category"
+      - name: merchant_city
+        description: "City where transaction took place"
+      - name: merchant_state
+        description: "State where transaction took place"
+      - name: use_chip
+        description: "Whether chip was used for the transaction"
+      - name: has_error
+        description: "True if transaction has an error else False"
+      - name: is_fraud
+        description: "Actual fraud label from training data - Yes or No"
+      - name: fraud_flag
+        description: "Rule based fraud flag - high_amount, transaction_error, unusual_hours, compromised_card, poor_credit, clean"
+      - name: credit_score
+        description: "Credit score of the customer"
+      - name: credit_score_category
+        description: "Credit score bucket - Exceptional, Very Good, Good, Fair, Poor"
+      - name: card_type
+        description: "Type of card used for the transaction"
+      - name: card_brand
+        description: "Brand of card used for the transaction"
+
+  - name: gold_customer_summary
+    description: "Customer level aggregated metrics including spend patterns and fraud rate"
+    columns:
+      - name: customer_id
+        description: "Unique identifier for each customer"
+        tests:
+          - unique
+          - not_null
+      - name: current_age
+        description: "Current age of the customer"
+      - name: gender
+        description: "Gender of the customer"
+      - name: credit_score
+        description: "Credit score of the customer"
+      - name: credit_score_category
+        description: "Credit score bucket - Exceptional, Very Good, Good, Fair, Poor"
+      - name: yearly_income
+        description: "Yearly income of the customer"
+      - name: total_debt
+        description: "Total debt of the customer"
+      - name: debt_to_income_ratio
+        description: "Total debt divided by yearly income"
+      - name: total_transactions
+        description: "Total number of transactions made by the customer"
+      - name: total_spend
+        description: "Total spend amount across all transactions"
+      - name: avg_transaction_amount
+        description: "Average transaction amount for the customer"
+      - name: max_transaction_amount
+        description: "Maximum single transaction amount for the customer"
+      - name: total_fraud_transactions
+        description: "Total number of fraudulent transactions for the customer"
+      - name: fraud_rate_pct
+        description: "Percentage of fraudulent transactions out of total transactions"
+  - name: gold_monthly_trends
+    description: "Monthly aggregated transaction trends with fraud rates and debit credit split"
+    columns:
+      - name: transaction_year
+        description: "Year of transactions"
+        tests:
+          - not_null
+      - name: transaction_month
+        description: "Month of transactions"
+        tests:
+          - not_null
+      - name: total_transactions
+        description: "Total number of transactions in that month"
+      - name: total_amount
+        description: "Total transaction amount in that month"
+      - name: avg_amount
+        description: "Average transaction amount in that month"
+      - name: total_debits
+        description: "Total debit transaction amount in that month"
+      - name: total_credits
+        description: "Total credit transaction amount in that month"
+      - name: total_fraud
+        description: "Total number of fraudulent transactions in that month"
+      - name: fraud_rate_pct
+        description: "Percentage of fraudulent transactions out of total in that month"

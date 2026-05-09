@@ -2,37 +2,104 @@ version: 2
 
 models:
   - name: bronze_transactions
+    description: "Raw transactions data ingested from source with basic type casting"
     columns:
       - name: transaction_id
+        description: "Unique identifier for each transaction"
         tests:
           - unique
           - not_null
+      - name: transaction_date
+        description: "Date and time of the transaction"
       - name: customer_id
+        description: "Foreign key to users table"
         tests:
           - not_null
       - name: card_id
+        description: "Foreign key to cards table"
         tests:
           - not_null
       - name: amount
+        description: "Transaction amount with $ sign removed and cast to decimal"
         tests:
           - not_null
+      - name: use_chip
+        description: "Whether chip was used for transaction - Chip Transaction, Online Transaction, Swipe Transaction"
+      - name: merchant_id
+        description: "Unique identifier for the merchant"
+      - name: merchant_city
+        description: "City where transaction took place"
+      - name: merchant_state
+        description: "State where transaction took place"
 
   - name: bronze_users
+    description: "Raw users/customers data with income fields cleaned"
     columns:
       - name: customer_id
+        description: "Unique identifier for each customer"
         tests:
           - unique
           - not_null
+      - name: current_age
+        description: "Current age of the customer"
+      - name: retirement_age
+        description: "Expected retirement age of the customer"
+      - name: birth_year
+        description: "Year of birth of the customer"
+      - name: birth_month
+        description: "Month of birth of the customer"
+      - name: gender
+        description: "Gender of the customer"
+      - name: address
+        description: "Home address of the customer"
+      - name: latitude
+        description: "Latitude coordinate of customer address"
+      - name: longitude
+        description: "Longitude coordinate of customer address"
+      - name: per_capita_income
+        description: "Per capita income with $ sign removed and cast to decimal"
+      - name: yearly_income
+        description: "Yearly income with $ sign removed and cast to decimal"
+      - name: total_debt
+        description: "Total debt with $ sign removed and cast to decimal"
       - name: credit_score
+        description: "Credit score of the customer"
         tests:
           - not_null
+      - name: num_credit_cards
+        description: "Number of credit cards owned by the customer"
 
   - name: bronze_cards
+    description: "Raw cards data with credit limit cleaned"
     columns:
       - name: card_id
+        description: "Unique identifier for each card"
         tests:
           - unique
           - not_null
       - name: customer_id
+        description: "Foreign key to users table"
         tests:
           - not_null
+      - name: card_brand
+        description: "Brand of the card - Visa, Mastercard etc"
+      - name: card_type
+        description: "Type of card - credit, debit etc"
+      - name: card_number
+        description: "Card number"
+      - name: expires
+        description: "Card expiry date"
+      - name: cvv
+        description: "Card CVV security code"
+      - name: has_chip
+        description: "Whether card has a chip - YES or NO"
+      - name: num_cards_issued
+        description: "Number of cards issued to customer"
+      - name: credit_limit
+        description: "Credit limit with $ sign removed and cast to decimal"
+      - name: acct_open_date
+        description: "Account opening date"
+      - name: year_pin_last_changed
+        description: "Year when PIN was last changed"
+      - name: card_on_dark_web
+        description: "Whether card details found on dark web - Yes or No"

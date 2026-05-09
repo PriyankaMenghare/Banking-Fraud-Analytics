@@ -2,39 +2,139 @@ version: 2
 
 models:
   - name: silver_transactions
+    description: "Cleaned transactions enriched with merchant category and fraud labels"
     columns:
       - name: transaction_id
+        description: "Unique identifier for each transaction"
         tests:
           - unique
           - not_null
-      - name: is_fraud
-        tests:
-          - accepted_values:
-              values: ['Yes', 'No']
+      - name: transaction_date
+        description: "Date and time of the transaction"
+      - name: transaction_year
+        description: "Year extracted from transaction date"
+      - name: transaction_month
+        description: "Month extracted from transaction date"
+      - name: transaction_day
+        description: "Day extracted from transaction date"
+      - name: transaction_hour
+        description: "Hour extracted from transaction date"
+      - name: customer_id
+        description: "Foreign key to silver_users"
+      - name: card_id
+        description: "Foreign key to silver_cards"
+      - name: amount
+        description: "Absolute transaction amount always positive"
       - name: transaction_direction
+        description: "Whether money is going in (credit) or out (debit) or zero"
         tests:
           - accepted_values:
               values: ['debit', 'credit', 'zero']
+      - name: use_chip
+        description: "Whether chip was used - Chip Transaction, Online Transaction, Swipe Transaction"
+      - name: merchant_id
+        description: "Unique identifier for the merchant"
+      - name: merchant_city
+        description: "City where transaction took place"
+      - name: merchant_state
+        description: "State where transaction took place"
+      - name: zip
+        description: "Zip code of merchant location"
+      - name: mcc_code
+        description: "Merchant category code for the transaction"
+      - name: merchant_category
+        description: "Human readable merchant category joined from mcc_codes seed"
+      - name: errors
+        description: "Transaction errors or NO Error if none"
+      - name: has_error
+        description: "True if transaction has an error else False"
+      - name: is_fraud
+        description: "Actual fraud label from training data - Yes or No"
+        tests:
+          - accepted_values:
+              values: ['Yes', 'No']
 
   - name: silver_users
+    description: "Cleaned users data with credit score categorization and debt to income ratio"
     columns:
       - name: customer_id
+        description: "Unique identifier for each customer"
         tests:
           - unique
           - not_null
+      - name: current_age
+        description: "Current age of the customer"
+      - name: retirement_age
+        description: "Expected retirement age of the customer"
+      - name: birth_year
+        description: "Year of birth of the customer"
+      - name: birth_month
+        description: "Month of birth of the customer"
+      - name: gender
+        description: "Gender of the customer"
+      - name: address
+        description: "Home address of the customer"
+      - name: latitude
+        description: "Latitude coordinate of customer address"
+      - name: longitude
+        description: "Longitude coordinate of customer address"
+      - name: per_capita_income
+        description: "Per capita income cleaned and cast to decimal"
+      - name: yearly_income
+        description: "Yearly income cleaned and cast to decimal"
+      - name: total_debt
+        description: "Total debt cleaned and cast to decimal"
+      - name: credit_score
+        description: "Credit score of the customer"
+        tests:
+          - not_null
       - name: credit_score_category
+        description: "Credit score bucket - Exceptional, Very Good, Good, Fair, Poor"
         tests:
           - accepted_values:
               values: ['Exceptional', 'Very Good', 'Good', 'Fair', 'Poor']
+      - name: num_credit_cards
+        description: "Number of credit cards owned by the customer"
+      - name: debt_to_income_ratio
+        description: "Total debt divided by yearly income rounded to 2 decimal places"
 
   - name: silver_cards
+    description: "Cleaned cards data with compromised card flag and account open date extracted"
     columns:
       - name: card_id
+        description: "Unique identifier for each card"
         tests:
           - unique
           - not_null
       - name: customer_id
+        description: "Foreign key to silver_users"
         tests:
           - relationships:
               to: ref('silver_users')
               field: customer_id
+      - name: card_brand
+        description: "Brand of the card - Visa, Mastercard etc"
+      - name: card_type
+        description: "Type of card - credit, debit etc"
+      - name: card_number
+        description: "Card number"
+      - name: expires
+        description: "Card expiry date"
+      - name: has_chip
+        description: "Whether card has a chip - YES or NO"
+      - name: num_cards_issued
+        description: "Number of cards issued to customer"
+      - name: credit_limit
+        description: "Credit limit of the card"
+      - name: acct_open_date
+        description: "Original account opening date string"
+      - name: acct_open_month
+        description: "Month extracted from account opening date"
+      - name: acct_open_year
+        description: "Year extracted from account opening date"
+      - name: year_pin_last_changed
+        description: "Year when PIN was last changed"
+      - name: card_on_dark_web
+        description: "Whether card details found on dark web - Yes or No"
+      - name: is_compromised
+        description: "True if card is found on dark web else False"
