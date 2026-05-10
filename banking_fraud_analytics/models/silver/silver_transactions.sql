@@ -1,3 +1,10 @@
+{{ config(
+    materialized='incremental',
+    unique_key='transaction_id',
+    incremental_strategy='merge',
+    on_schema_change='sync_all_columns'
+) }}
+
 SELECT
     t.transaction_id,
     t.transaction_date,
@@ -20,7 +27,7 @@ SELECT
     t.zip,
     t.mcc_code,
     m.description                           AS merchant_category,
-    COALESCE(t.errors, 'NO Error')         AS errors,
+    COALESCE(t.errors, 'NO Error')          AS errors,
     CASE
         WHEN t.errors IS NOT NULL THEN TRUE
         ELSE FALSE
@@ -31,3 +38,7 @@ LEFT JOIN {{ ref('mcc_codes') }}            AS m
     ON CAST(t.mcc_code AS STRING) = CAST(m.mcc_code AS STRING)
 LEFT JOIN {{ ref('train_fraud_labels') }}   AS f
     ON CAST(t.transaction_id AS STRING) = CAST(f.transaction_id AS STRING)
+
+{% if is_incremental() %}
+WHERE t.transaction_date > (SELECT MAX(transaction_date) FROM {{ this }})
+{% endif %}

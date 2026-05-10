@@ -11,6 +11,10 @@ models:
           - not_null
       - name: transaction_date
         description: "Date and time of the transaction"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: timestamp
       - name: transaction_year
         description: "Year extracted from transaction date"
       - name: transaction_month
@@ -25,6 +29,11 @@ models:
         description: "Foreign key to silver_cards"
       - name: amount
         description: "Absolute transaction amount always positive"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 10000000
       - name: transaction_direction
         description: "Whether money is going in (credit) or out (debit) or zero"
         tests:

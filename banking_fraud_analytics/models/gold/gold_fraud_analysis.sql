@@ -1,3 +1,10 @@
+{{ config(
+    materialized='incremental',
+    unique_key='transaction_id',
+    incremental_strategy='merge',
+    on_schema_change='sync_all_columns'
+) }}
+
 SELECT
     t.transaction_id,
     t.transaction_date,
@@ -29,3 +36,7 @@ LEFT JOIN {{ ref('silver_users') }}                  AS u
     ON t.customer_id = u.customer_id
 LEFT JOIN {{ ref('silver_cards') }}                  AS c
     ON t.card_id = c.card_id
+
+{% if is_incremental() %}
+WHERE t.transaction_date > (SELECT MAX(transaction_date) FROM {{ this }})
+{% endif %}
