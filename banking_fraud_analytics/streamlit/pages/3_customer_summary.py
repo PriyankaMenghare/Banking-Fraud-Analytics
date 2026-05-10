@@ -3,7 +3,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import sys
 sys.path.append('..')
-from db_connection import run_query
+from db_connection import run_query, CATALOG
 from components.sidebar import apply_theme, render_sidebar
 
 render_sidebar()
@@ -15,7 +15,7 @@ st.set_page_config(page_title="Customer Summary", page_icon="👤", layout="wide
 st.title("👤 Customer Summary Dashboard")
 
 # --- LOAD DATA ---
-metrics = run_query("""
+metrics = run_query(f"""
     SELECT
         COUNT(DISTINCT customer_id)         AS total_customers,
         ROUND(AVG(total_transactions), 2)   AS avg_transactions,
@@ -24,7 +24,7 @@ metrics = run_query("""
     FROM {CATALOG}.gold.gold_customer_summary
 """)
 
-spend_by_gender = run_query("""
+spend_by_gender = run_query(f"""
     SELECT gender,
         COUNT(customer_id)              AS total_customers,
         ROUND(AVG(total_spend), 2)      AS avg_spend,
@@ -33,7 +33,7 @@ spend_by_gender = run_query("""
     GROUP BY gender
 """)
 
-spend_by_credit = run_query("""
+spend_by_credit = run_query(f"""
     SELECT credit_score_category,
         COUNT(customer_id)              AS total_customers,
         ROUND(AVG(total_spend), 2)      AS avg_spend,
@@ -43,7 +43,7 @@ spend_by_credit = run_query("""
     ORDER BY avg_fraud_rate DESC
 """)
 
-top_fraud_customers = run_query("""
+top_fraud_customers = run_query(f"""
     SELECT customer_id, total_transactions, total_spend,
            total_fraud_transactions, fraud_rate_pct, credit_score_category
     FROM {CATALOG}.gold.gold_customer_summary
@@ -52,7 +52,7 @@ top_fraud_customers = run_query("""
     LIMIT 10
 """)
 
-age_distribution = run_query("""
+age_distribution = run_query(f"""
     SELECT
         CASE
             WHEN current_age < 25 THEN 'Under 25'

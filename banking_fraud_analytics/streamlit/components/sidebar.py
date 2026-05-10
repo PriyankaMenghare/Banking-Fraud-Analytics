@@ -157,7 +157,7 @@ def render_sidebar():
                 <tr><td>🔄 Transform</td><td style='color:#2E86AB'>dbt</td></tr>
                 <tr><td>🏗️ Warehouse</td><td style='color:#2E86AB'>Databricks</td></tr>
                 <tr><td>📊 Dashboard</td><td style='color:#2E86AB'>Streamlit</td></tr>
-                <tr><td>⏰ Orchestrate</td><td style='color:#FFB347'>Airflow soon</td></tr>
+                <tr><td>⏰ Orchestrate</td><td style='color:#FFB347'>Airflow</td></tr>
             </table>
         </div>
         """, unsafe_allow_html=True)

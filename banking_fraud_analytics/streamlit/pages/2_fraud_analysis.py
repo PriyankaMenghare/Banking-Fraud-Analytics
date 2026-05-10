@@ -3,7 +3,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import sys
 sys.path.append('..')
-from db_connection import run_query
+from db_connection import run_query, CATALOG
 from components.sidebar import apply_theme, render_sidebar
 
 render_sidebar()
@@ -15,7 +15,7 @@ st.set_page_config(page_title="Fraud Analysis", page_icon="🔍", layout="wide")
 st.title("🔍 Fraud Analysis Dashboard")
 
 # --- LOAD ALL DATA VIA SQL AGGREGATIONS ---
-metrics = run_query("""
+metrics = run_query(f"""
     SELECT
         COUNT(*)                                                        AS total_transactions,
         SUM(CASE WHEN is_fraud = 'Yes' THEN 1 ELSE 0 END)             AS total_fraud,
@@ -25,14 +25,14 @@ metrics = run_query("""
     FROM {CATALOG}.gold.gold_fraud_analysis
 """)
 
-fraud_flags = run_query("""
+fraud_flags = run_query(f"""
     SELECT fraud_flag, COUNT(*) AS count
     FROM {CATALOG}.gold.gold_fraud_analysis
     GROUP BY fraud_flag
     ORDER BY count DESC
 """)
 
-card_fraud = run_query("""
+card_fraud = run_query(f"""
     SELECT card_brand, COUNT(*) AS fraud_count
     FROM {CATALOG}.gold.gold_fraud_analysis
     WHERE is_fraud = 'Yes'
@@ -40,7 +40,7 @@ card_fraud = run_query("""
     ORDER BY fraud_count DESC
 """)
 
-merchant_fraud = run_query("""
+merchant_fraud = run_query(f"""
     SELECT merchant_category, COUNT(*) AS fraud_count
     FROM {CATALOG}.gold.gold_fraud_analysis
     WHERE is_fraud = 'Yes'
@@ -49,7 +49,7 @@ merchant_fraud = run_query("""
     LIMIT 10
 """)
 
-direction_fraud = run_query("""
+direction_fraud = run_query(f"""
     SELECT transaction_direction, COUNT(*) AS fraud_count
     FROM {CATALOG}.gold.gold_fraud_analysis
     WHERE is_fraud = 'Yes'
@@ -57,7 +57,7 @@ direction_fraud = run_query("""
     GROUP BY transaction_direction
 """)
 
-credit_score_fraud = run_query("""
+credit_score_fraud = run_query(f"""
     SELECT credit_score_category, COUNT(*) AS fraud_count
     FROM {CATALOG}.gold.gold_fraud_analysis
     WHERE is_fraud = 'Yes'

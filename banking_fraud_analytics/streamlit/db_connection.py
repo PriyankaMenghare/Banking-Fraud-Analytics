@@ -2,6 +2,9 @@ from databricks import sql
 import pandas as pd
 import os
 import streamlit as st
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path='../.env')
 
 CATALOG = os.getenv("DBT_CATALOG", "banking_fraud_analytics_dev")
     
@@ -11,8 +14,6 @@ def get_connection():
         http_path = st.secrets["DATABRICKS_HTTP_PATH"]
         token = st.secrets["DATABRICKS_TOKEN"]
     except Exception:
-        from dotenv import load_dotenv
-        load_dotenv(dotenv_path='../.env')
         host = os.getenv("DATABRICKS_HOST")
         http_path = os.getenv("DATABRICKS_HTTP_PATH")
         token = os.getenv("DATABRICKS_TOKEN")

@@ -1,5 +1,5 @@
 import streamlit as st
-from db_connection import run_query
+from db_connection import run_query, CATALOG
 from components.sidebar import render_sidebar
 
 st.set_page_config(
@@ -48,7 +48,7 @@ st.markdown("Real time fraud detection and customer analytics pipeline")
 st.markdown("---")
 
 # Load metrics
-metrics = run_query("""
+metrics = run_query(f"""
     SELECT
         COUNT(transaction_id)                                           AS total_transactions,
         SUM(CASE WHEN is_fraud = 'Yes' THEN 1 ELSE 0 END)             AS total_fraud,

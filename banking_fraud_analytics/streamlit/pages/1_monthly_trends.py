@@ -3,7 +3,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import sys
 sys.path.append('..')
-from db_connection import run_query
+from db_connection import run_query, CATALOG
 from components.sidebar import apply_theme, render_sidebar
 
 render_sidebar()
@@ -14,7 +14,7 @@ apply_theme(theme)
 st.set_page_config(page_title="Monthly Trends", page_icon="📈", layout="wide")
 st.title("📈 Monthly Transaction Trends")
 
-df = run_query("""
+df = run_query(f"""
     SELECT *
     FROM {CATALOG}.gold.gold_monthly_trends
     ORDER BY transaction_year, transaction_month
