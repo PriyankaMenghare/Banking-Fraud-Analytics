@@ -16,7 +16,7 @@ st.title("📈 Monthly Transaction Trends")
 
 df = run_query("""
     SELECT *
-    FROM banking_fraud_analytics_dev.gold.gold_monthly_trends
+    FROM {CATALOG}.gold.gold_monthly_trends
     ORDER BY transaction_year, transaction_month
 """)
 

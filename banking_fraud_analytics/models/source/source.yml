@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: banking_source
-    catalog: banking_fraud_analytics_dev
+    database: '{{ target.database}}'
     schema: source
     freshness:
       warn_after: {count: 24, period: hour}

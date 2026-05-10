@@ -2,17 +2,19 @@ from airflow import DAG
 from airflow.providers.standard.operators.bash import BashOperator
 from datetime import datetime, timedelta
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
 DBT_PROJECT_DIR = "/opt/airflow/dbt"
 DBT_PROFILES_DIR = "/home/airflow/.dbt"
 DBT_BIN = "/home/airflow/.local/bin/dbt"
+DBT_TARGET = os.getenv("DBT_TARGET", "dev")
 
 def dbt_task(task_id, command, retries=1):
     return BashOperator(
         task_id=task_id,
-        bash_command=f'cd {DBT_PROJECT_DIR} && {DBT_BIN} {command} --profiles-dir {DBT_PROFILES_DIR}',
+        bash_command=f'cd {DBT_PROJECT_DIR} && {DBT_BIN} {command} --profiles-dir {DBT_PROFILES_DIR} --target {DBT_TARGET}',
         retries=retries,
         retry_delay=timedelta(minutes=2),
     )

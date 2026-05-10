@@ -3,6 +3,8 @@ import pandas as pd
 import os
 import streamlit as st
 
+CATALOG = os.getenv("DBT_CATALOG", "banking_fraud_analytics_dev")
+    
 def get_connection():
     try:
         host = st.secrets["DATABRICKS_HOST"]

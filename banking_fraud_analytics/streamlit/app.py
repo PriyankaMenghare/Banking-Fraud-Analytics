@@ -55,7 +55,7 @@ metrics = run_query("""
         ROUND(SUM(CASE WHEN is_fraud = 'Yes' THEN 1 ELSE 0 END) * 100.0
               / COUNT(transaction_id), 2)                              AS fraud_rate_pct,
         COUNT(DISTINCT customer_id)                                    AS total_customers
-    FROM banking_fraud_analytics_dev.gold.gold_fraud_analysis
+    FROM {CATALOG}.gold.gold_fraud_analysis
 """)
 
 # Metrics row

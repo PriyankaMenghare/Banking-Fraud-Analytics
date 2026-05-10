@@ -21,7 +21,7 @@ metrics = run_query("""
         ROUND(AVG(total_transactions), 2)   AS avg_transactions,
         ROUND(AVG(total_spend), 2)          AS avg_spend,
         ROUND(AVG(fraud_rate_pct), 2)       AS avg_fraud_rate
-    FROM banking_fraud_analytics_dev.gold.gold_customer_summary
+    FROM {CATALOG}.gold.gold_customer_summary
 """)
 
 spend_by_gender = run_query("""
@@ -29,7 +29,7 @@ spend_by_gender = run_query("""
         COUNT(customer_id)              AS total_customers,
         ROUND(AVG(total_spend), 2)      AS avg_spend,
         ROUND(AVG(fraud_rate_pct), 2)   AS avg_fraud_rate
-    FROM banking_fraud_analytics_dev.gold.gold_customer_summary
+    FROM {CATALOG}.gold.gold_customer_summary
     GROUP BY gender
 """)
 
@@ -38,7 +38,7 @@ spend_by_credit = run_query("""
         COUNT(customer_id)              AS total_customers,
         ROUND(AVG(total_spend), 2)      AS avg_spend,
         ROUND(AVG(fraud_rate_pct), 2)   AS avg_fraud_rate
-    FROM banking_fraud_analytics_dev.gold.gold_customer_summary
+    FROM {CATALOG}.gold.gold_customer_summary
     GROUP BY credit_score_category
     ORDER BY avg_fraud_rate DESC
 """)
@@ -46,7 +46,7 @@ spend_by_credit = run_query("""
 top_fraud_customers = run_query("""
     SELECT customer_id, total_transactions, total_spend,
            total_fraud_transactions, fraud_rate_pct, credit_score_category
-    FROM banking_fraud_analytics_dev.gold.gold_customer_summary
+    FROM {CATALOG}.gold.gold_customer_summary
     WHERE total_fraud_transactions > 0
     ORDER BY fraud_rate_pct DESC
     LIMIT 10
@@ -64,7 +64,7 @@ age_distribution = run_query("""
         END AS age_group,
         COUNT(customer_id)              AS total_customers,
         ROUND(AVG(fraud_rate_pct), 2)   AS avg_fraud_rate
-    FROM banking_fraud_analytics_dev.gold.gold_customer_summary
+    FROM {CATALOG}.gold.gold_customer_summary
     GROUP BY age_group
     ORDER BY age_group
 """)

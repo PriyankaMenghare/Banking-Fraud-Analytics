@@ -22,19 +22,19 @@ metrics = run_query("""
         ROUND(SUM(CASE WHEN is_fraud = 'Yes' THEN 1 ELSE 0 END) * 100.0
               / COUNT(*), 2)                                           AS fraud_rate,
         SUM(CASE WHEN is_compromised = TRUE THEN 1 ELSE 0 END)        AS compromised_cards
-    FROM banking_fraud_analytics_dev.gold.gold_fraud_analysis
+    FROM {CATALOG}.gold.gold_fraud_analysis
 """)
 
 fraud_flags = run_query("""
     SELECT fraud_flag, COUNT(*) AS count
-    FROM banking_fraud_analytics_dev.gold.gold_fraud_analysis
+    FROM {CATALOG}.gold.gold_fraud_analysis
     GROUP BY fraud_flag
     ORDER BY count DESC
 """)
 
 card_fraud = run_query("""
     SELECT card_brand, COUNT(*) AS fraud_count
-    FROM banking_fraud_analytics_dev.gold.gold_fraud_analysis
+    FROM {CATALOG}.gold.gold_fraud_analysis
     WHERE is_fraud = 'Yes'
     GROUP BY card_brand
     ORDER BY fraud_count DESC
@@ -42,7 +42,7 @@ card_fraud = run_query("""
 
 merchant_fraud = run_query("""
     SELECT merchant_category, COUNT(*) AS fraud_count
-    FROM banking_fraud_analytics_dev.gold.gold_fraud_analysis
+    FROM {CATALOG}.gold.gold_fraud_analysis
     WHERE is_fraud = 'Yes'
     GROUP BY merchant_category
     ORDER BY fraud_count DESC
@@ -51,7 +51,7 @@ merchant_fraud = run_query("""
 
 direction_fraud = run_query("""
     SELECT transaction_direction, COUNT(*) AS fraud_count
-    FROM banking_fraud_analytics_dev.gold.gold_fraud_analysis
+    FROM {CATALOG}.gold.gold_fraud_analysis
     WHERE is_fraud = 'Yes'
     AND transaction_direction != 'zero'
     GROUP BY transaction_direction
@@ -59,7 +59,7 @@ direction_fraud = run_query("""
 
 credit_score_fraud = run_query("""
     SELECT credit_score_category, COUNT(*) AS fraud_count
-    FROM banking_fraud_analytics_dev.gold.gold_fraud_analysis
+    FROM {CATALOG}.gold.gold_fraud_analysis
     WHERE is_fraud = 'Yes'
     GROUP BY credit_score_category
     ORDER BY fraud_count DESC
