@@ -6,7 +6,9 @@ name: 'banking_fraud_analytics'
 version: '1.0.0'
 
 flags:
-  use_managed_iceberg: true  
+  use_managed_iceberg: true
+  use_materialization_v2: true
+  use_concurrent_microbatch: true
 
 # This setting configures which "profile" dbt uses for this project.
 profile: 'banking_fraud_analytics'
@@ -34,16 +36,18 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   banking_fraud_analytics:
-     bronze:
-      +materialized: table #other options include view, incremental, ephemeral
+    +persist_docs:
+      relation: true
+      columns: true
+    bronze:
+      +materialized: table
       +schema: bronze
-     silver:
+    silver:
       +materialized: table
       +schema: silver
-     gold:
+    gold:
       +materialized: table
       +schema: gold
-
 seeds:
   banking_fraud_analytics:
     +schema: seeds

@@ -9,36 +9,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS
-st.markdown("""
-<style>
-    [data-testid="stMetricValue"] {
-        font-size: 28px;
-        font-weight: bold;
-        color: #2E86AB;
-    }
-    [data-testid="stMetricLabel"] {
-        font-size: 14px;
-        color: #AAAAAA;
-    }
-    .metric-card {
-        background-color: #1E2130;
-        border-radius: 10px;
-        padding: 20px;
-        border-left: 4px solid #2E86AB;
-    }
-    .section-header {
-        font-size: 20px;
-        font-weight: bold;
-        color: #2E86AB;
-        margin-bottom: 10px;
-    }
-    div[data-testid="stSidebarNav"] {
-        background-color: #1E2130;
-    }
-</style>
-""", unsafe_allow_html=True)
-
 # Sidebar
 render_sidebar()
 
