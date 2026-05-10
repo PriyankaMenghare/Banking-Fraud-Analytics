@@ -42,6 +42,10 @@ with DAG(
         'dbt_source_freshness',
         'source freshness'
     )
+    convert_seeds = BashOperator(
+        task_id='convert_seeds',
+        bash_command=f'cd {DBT_PROJECT_DIR} && python scripts/convert_json_to_csv.py',
+    )
 
     # Seeds — only reload small lookup table
     seed = dbt_task('dbt_seed', 'seed --select mcc_codes')
@@ -74,8 +78,7 @@ with DAG(
     docs = dbt_task('dbt_docs_generate', 'docs generate')
 
     # Dependencies
-    source_freshness >> seed
-    seed >> [bronze_transactions, bronze_users, bronze_cards]
+    source_freshness >> convert_seeds >> seed >> [bronze_transactions, bronze_users, bronze_cards]
     [bronze_transactions, bronze_users, bronze_cards] >> test_bronze
     bronze_transactions >> silver_transactions
     bronze_users >> silver_users
