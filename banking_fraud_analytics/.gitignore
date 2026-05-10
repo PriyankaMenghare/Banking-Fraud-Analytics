@@ -1,8 +1,23 @@
+# Airflow
+airflow/config/
+airflow/logs/
+airflow/.env
 
+# dbt
 target/
 dbt_packages/
 logs/
-.DS_Store
+
+# Secrets
 .env
-.venv
+*.token
+profiles.yml
+
+# Python
+.venv/
 __pycache__/
+*.pyc
+
+# Seeds (generated files)
+seeds/mcc_codes.csv
+seeds/train_fraud_labels.csvairflow/config/
