@@ -1,0 +1,77 @@
+name: dbt CI Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  dbt-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Install dependencies
+        run: |
+          cd banking_fraud_analytics
+          uv venv
+          source .venv/bin/activate
+          uv add dbt-databricks
+
+      - name: Create dbt profiles
+        run: |
+          mkdir -p ~/.dbt
+          cat > ~/.dbt/profiles.yml << EOF
+          banking_fraud_analytics:
+            outputs:
+              dev:
+                type: databricks
+                catalog: ${{ secrets.DBT_CATALOG }}
+                host: ${{ secrets.DATABRICKS_HOST }}
+                http_path: ${{ secrets.DATABRICKS_HTTP_PATH }}
+                token: ${{ secrets.DATABRICKS_TOKEN }}
+                schema: default
+                threads: 4
+            target: dev
+          EOF
+
+      - name: Generate seed files
+        run: |
+          cd banking_fraud_analytics
+          source .venv/bin/activate
+          python scripts/convert_json_to_csv.py
+
+      - name: dbt debug
+        run: |
+          cd banking_fraud_analytics
+          source .venv/bin/activate
+          dbt debug
+
+      - name: dbt deps
+        run: |
+          cd banking_fraud_analytics
+          source .venv/bin/activate
+          dbt deps
+
+      - name: dbt compile
+        run: |
+          cd banking_fraud_analytics
+          source .venv/bin/activate
+          dbt compile
+
+      - name: dbt test
+        run: |
+          cd banking_fraud_analytics
+          source .venv/bin/activate
+          dbt test
