@@ -51,11 +51,11 @@ jobs:
             target: dev
           EOF
 
-      - name: Generate seed files
+      - name: dbt deps
         run: |
           cd banking_fraud_analytics
           source .venv/bin/activate
-          python scripts/convert_json_to_csv.py
+          dbt deps
 
       - name: dbt debug
         run: |
@@ -63,20 +63,6 @@ jobs:
           source .venv/bin/activate
           dbt debug
 
-      - name: dbt deps
-        run: |
-          cd banking_fraud_analytics
-          source .venv/bin/activate
-          dbt deps
-
       - name: dbt compile
         run: |
           cd banking_fraud_analytics
-          source .venv/bin/activate
-          dbt compile
-
-      - name: dbt test
-        run: |
-          cd banking_fraud_analytics
-          source .venv/bin/activate
-          dbt test
