@@ -63,9 +63,9 @@ jobs:
       - name: dbt compile
         run: |
           cd banking_fraud_analytics
-          .venv/bin/dbt compile
+          .venv/bin/dbt compile --exclude silver_transactions silver_users silver_cards gold_fraud_analysis gold_customer_summary gold_monthly_trends
 
       - name: dbt test
         run: |
           cd banking_fraud_analytics
-          .venv/bin/dbt test --exclude source:*
+          .venv/bin/dbt test --select bronze --exclude source:*

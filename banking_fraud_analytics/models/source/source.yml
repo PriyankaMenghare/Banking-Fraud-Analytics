@@ -4,9 +4,10 @@ sources:
   - name: banking_source
     database: '{{ target.database}}'
     schema: source
-    freshness:
-      warn_after: {count: 24, period: hour}
-      error_after: {count: 48, period: hour}
+    config:
+      freshness:
+        warn_after: {count: 24, period: hour}
+        error_after: {count: 48, period: hour}
     loaded_at_field: date
     tables:
       - name: transactions_data
