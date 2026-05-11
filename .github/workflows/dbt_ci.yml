@@ -31,8 +31,7 @@ jobs:
         run: |
           cd banking_fraud_analytics
           uv venv
-          source .venv/bin/activate
-          uv add dbt-databricks
+          uv pip install dbt-databricks
 
       - name: Create dbt profiles
         run: |
@@ -54,15 +53,19 @@ jobs:
       - name: dbt deps
         run: |
           cd banking_fraud_analytics
-          source .venv/bin/activate
-          dbt deps
+          .venv/bin/dbt deps
 
       - name: dbt debug
         run: |
           cd banking_fraud_analytics
-          source .venv/bin/activate
-          dbt debug
+          .venv/bin/dbt debug
 
       - name: dbt compile
         run: |
           cd banking_fraud_analytics
+          .venv/bin/dbt compile
+
+      - name: dbt test
+        run: |
+          cd banking_fraud_analytics
+          .venv/bin/dbt test --exclude source:*
