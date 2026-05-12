@@ -49,6 +49,13 @@ jobs:
                 threads: 4
             target: dev
           EOF
+      - name: Prepare seed files for CI
+        run: |
+          cd banking_fraud_analytics
+          head -21 seeds/train_fraud_labels.csv > seeds/train_fraud_labels_ci.csv
+          mv seeds/train_fraud_labels_ci.csv seeds/train_fraud_labels.csv
+          echo "train_fraud_labels truncated to $(wc -l < seeds/train_fraud_labels.csv) rows"
+          echo "mcc_codes has $(wc -l < seeds/mcc_codes.csv) rows"
 
       - name: dbt deps
         run: |

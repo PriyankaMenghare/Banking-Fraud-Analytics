@@ -30,8 +30,8 @@ banking_fraud_analytics/airflow/logs/
 banking_fraud_analytics/airflow/.env
 
 # Seeds (generated files)
-banking_fraud_analytics/seeds/mcc_codes.csv
-banking_fraud_analytics/seeds/train_fraud_labels.csv
+# banking_fraud_analytics/seeds/mcc_codes.csv
+# banking_fraud_analytics/seeds/train_fraud_labels.csv
 
 # OS
 .DS_Store
