@@ -3,7 +3,7 @@ name = "banking-fraud-analytics"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.11,<4.0.0"
 dependencies = [
     "databricks-sql-connector>=4.2.6",
     "dbt-core>=1.11.9",

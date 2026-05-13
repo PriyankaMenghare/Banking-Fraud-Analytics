@@ -1,3 +1,10 @@
+{{ config(
+    materialized='incremental',
+    unique_key='transaction_id',
+    incremental_strategy='merge',
+    on_schema_change='sync_all_columns'
+) }}
+
 SELECT
     id                  AS transaction_id,
     date                AS transaction_date,
@@ -12,3 +19,7 @@ SELECT
     mcc                 AS mcc_code,
     errors
 FROM {{ source('banking_source', 'transactions_data') }}
+
+{% if is_incremental() %}
+WHERE date > (SELECT MAX(transaction_date) FROM {{ this }})
+{% endif %}
