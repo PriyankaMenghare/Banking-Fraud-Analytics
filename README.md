@@ -9,7 +9,7 @@
 > An end-to-end data engineering project that detects fraudulent banking transactions using **Databricks**, **dbt**, **Apache Airflow**, and **Streamlit**.
 
 ## 🌐 Live Demo
-👉 [View Dashboard](https://priyankamenghare-ban-banking-fraud-analyticsstreamlitapp-zsiwmw.streamlit.app)
+👉 [View Dashboard](https://priyankamenghare-banking-fraud-analytics.streamlit.app)
 
 ---
 
@@ -705,7 +705,7 @@ sql.connect(..., use_cloud_fetch=False)
 **Priyanka Menghare**
 - GitHub: [@PriyankaMenghare](https://github.com/PriyankaMenghare)
 - Project: [Banking-Fraud-Analytics](https://github.com/PriyankaMenghare/Banking-Fraud-Analytics)
-- Dashboard: [Live Demo](https://priyankamenghare-ban-banking-fraud-analyticsstreamlitapp-zsiwmw.streamlit.app)
+- Dashboard: [Live Demo](https://priyankamenghare-banking-fraud-analytics.streamlit.app)
 
 ---
 
