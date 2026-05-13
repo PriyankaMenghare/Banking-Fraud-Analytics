@@ -36,6 +36,7 @@ banking_fraud_analytics/airflow/.env
 # OS
 .DS_Store
 Thumbs.db
+.devcontainer/
 
 # IDE
 .vscode/settings.json
